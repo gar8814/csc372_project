@@ -1,0 +1,37 @@
+<code>::=<stmt>
+
+<stmt>::= <var>is<expr>. | 
+<var>is<intexpr>. | 
+<var>is<boolexpr>. 
+
+<boolexpr>::= | gt(<expr>,<expr>)
+ | lt(<expr>,<expr>)
+ | gte(<expr>,<expr>)
+ | lte(<expr>,<expr>)
+ | eq(<expr>,<expr>)
+
+<intexpr>::= add(<expr>,<expr>) | 
+div(<expr>,<expr>) | 
+mult(<expr>,<expr>) | 
+mod(<expr>,<expr>) | 
+sub(<expr>,<expr>) 
+
+<conditional> ::= "If" "(" <expr> ")" "{" <code> "}" "else" "{" <code "}"
+
+<loop> ::= "While" "(" <expr> ")" "{" <code> "}"
+
+<expression> ::= <intexpr> | <boolexpr>
+ | <var> | <intr>
+ | <str> | <bool>
+
+<var> ::= <letter> <num>*
+<num> ::= <letter> | <digit>
+<integer> ::= <digit>*
+<str>::='"'<char>'"'
+<bool>::= "true" | "false"
+<digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<letter> ::= "a" | "b" | "c" | ... | "z" | "A" | "B" | "C" | ... | "Z"
+<char> ::= <letter> | <digit> | "!" | "@" | ... | "&" | ...
+
+
+

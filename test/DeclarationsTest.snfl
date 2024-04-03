@@ -1,0 +1,5 @@
+juliet is 10
+romeo is 18
+// This is a comment which will be ignored by the tokenizer
+november is 14
+helloWorld is "Hello world!"

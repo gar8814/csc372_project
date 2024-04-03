@@ -72,25 +72,3 @@ class SnflParser:
             raise ParseException(f"Expected value but got {value.type}")
 
         return Declaration(f"DECLARATION {identifier} {assign.value} {value.value}", identifier, value.value)
-
-    def print(self):
-        '''
-        Parse a print statement.
-        '''
-        print_token = self.consume()
-        if print_token.type != 'PRINT':
-            raise ParseException(f"Expected 'PRINT' but got {print_token.type}")
-
-        l_paren = self.consume()
-        if l_paren.type != 'LPAREN':
-            raise ParseException(f"Expected '(' but got {l_paren.type}")
-
-        string = self.consume()
-        if string.type != 'STRING' and string.type != 'IDENTIFIER':
-            raise ParseException(f"Expected 'STRING' or 'IDENTIFIER' but got {string.type}")
-
-        r_paren = self.consume()
-        if r_paren.type != 'RPAREN':
-            raise ParseException(f"Expected ')' but got {r_paren.type}")
-
-        return Print(f"PRINT {l_paren.value} {string.value} {r_paren.value}", print_token.type, string.value)

@@ -1,0 +1,9 @@
+print("hello world")
+
+july is 7
+
+print(july)
+print(143)
+print(true)
+print(false)
+print("false")

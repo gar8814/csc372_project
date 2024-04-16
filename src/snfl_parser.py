@@ -8,6 +8,7 @@ e.g. ['juliet', 'is', '10'] -> ['DECLARATION juliet is 10']
 
 from parse_exception import ParseException
 from declaration import Declaration
+from print import Print
 
 class SnflParser:
 
@@ -25,6 +26,8 @@ class SnflParser:
 
             if current.type in ['IDENTIFIER']:
                 statements.append(self.declaration())
+            elif current.type == 'PRINT':
+                statements.append(self.print())
             else:
                 raise ParseException(f"Unexpected token: {current.type}")
             
@@ -72,3 +75,25 @@ class SnflParser:
             raise ParseException(f"Expected value but got {value.type}")
 
         return Declaration(f"DECLARATION {identifier} {assign.value} {value.value}", identifier, value.value)
+
+    def print(self):
+        '''
+        Parse a print statement.
+        '''
+        token = self.consume()
+        if token.type != 'PRINT':
+            raise ParseException(f"Invalid print statement: {token}")
+        
+        l_paren = self.consume()
+        if l_paren.type != 'LPAREN':
+            raise ParseException(f"Expected '(' but got {l_paren}")
+        
+        string = self.consume()
+        if string.type != 'STRING' and string.type != 'IDENTIFIER' and string.type != 'NUMBER' and string.type != 'BOOLEAN' and string.type != 'CHAR':
+            raise ParseException(f"Cannot print - received {string.type}")
+        
+        r_paren = self.consume()
+        if r_paren.type != 'RPAREN':
+            raise ParseException(f"Expected ')' but got {r_paren}")
+        
+        return Print(f"PRINT {l_paren.value} {string.value} {r_paren.value}", token.type, string.value)

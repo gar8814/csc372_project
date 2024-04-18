@@ -104,6 +104,7 @@ def tokenize_data(config, data):
     '''
     Step 1: Tokenize the data.
     '''
+    print("Step 1: Tokenize Data")
     tokenizer = SnflTokenizer()
     tokenizer.build()
     tokens = tokenizer.tokenize(data)
@@ -117,6 +118,7 @@ def parse_tokens(config, tokens):
     '''
     Step 2: Parse the tokens.
     '''
+    print("Step 2: Parse the tokens")
     parser = SnflParser(tokens)
     statements = parser.parse()
 

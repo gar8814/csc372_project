@@ -1,6 +1,6 @@
-from statement import Statement
+from declaration import Declaration
 
-class Operations(Statement):
+class Operations(Declaration):
     '''
     Represents a declaration statement such as a variable or value declaration.
 

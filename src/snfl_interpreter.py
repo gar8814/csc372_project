@@ -21,6 +21,7 @@ Usage:
 
 import sys
 from declaration import Declaration
+from operations import Operations
 from snfl_parser import SnflParser
 from snfl_tokenizer import SnflTokenizer
 
@@ -55,6 +56,7 @@ class Interpreter:
         statement_type = type(statement)
         switcher = {
             Declaration: self.declare,
+            Operations: self.operation
         }
         func = switcher.get(statement_type, lambda: "Invalid statement")
         func(statement)
@@ -64,6 +66,10 @@ class Interpreter:
 
         if (self.config.debug):
             print(f"Declared variable '{statement.identifier}' with value '{statement.value}'")
+    
+    def operation(self, statement):
+        print(f"I made it to the operation with {statement}")
+        print("Cheers!")
 
 def main():
     # Initial configuration
@@ -81,6 +87,7 @@ def main():
         return
     
     config = Config(debug)
+
 
     with open(filename, 'r') as file:
         data = file.read()

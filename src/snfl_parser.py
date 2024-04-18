@@ -95,7 +95,7 @@ class SnflParser:
             secondVal = self.consume()
             print(secondVal.value)
             self.consume()
-            return Operations(f"Test", value.value, firstVal.value, secondVal.value)
+            return Operations(f"ADD {identifier} {assign.value} {firstVal.value} + {secondVal.value}", value.value, firstVal.value, secondVal.value)
         else:
             raise ParseException(f"Expected value but got {value.type}")
 

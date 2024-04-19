@@ -1,7 +1,27 @@
 add(1,2)
 a is 1
 b is 2
+d is -2
+e is 5
+f is 6
+
 c is add(a, b)
-a is "string"
-b is 2
-d is add(a,b)
+print("1+2:")
+print(c)
+
+c is sub(d,b)
+print("-2-2:")
+print(c)
+
+c is mult(a,b)
+print("1*2:")
+print(c)
+
+c is div(e,b)
+print("5/2:")
+print(c)
+
+c is mod(f,b)
+print("6%2:")
+print(c)
+

@@ -114,6 +114,30 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
+        elif statement.identifier == 'sub':
+            result = left - right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        elif statement.identifier == 'mult':
+            result = left * right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        elif statement.identifier == 'div':
+            result = left // right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        elif statement.identifier == 'mod':
+            result = left % right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
         elif statement.identifier == 'gt':
             result = left > right
             if statement.dest is not None:
@@ -144,6 +168,9 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
+        else:
+            # Some kind of exception. 
+            pass
 def main():
     # Initial configuration
     if len(sys.argv) < 2:

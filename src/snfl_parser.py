@@ -32,15 +32,13 @@ class SnflParser:
             'GTE': self.__op,
             'LTE': self.__op,
             'EQ': self.__op,
-            'PRINT': self.__print()
-
+            'PRINT': self.__print
         }
 
     def parse(self):
         '''
         Parse the tokens and return the statements.        
         '''
-        print("In SnflParser.parse()")
         statements = []
         while not self.__isEOF():
             current = self.__peek()
@@ -136,19 +134,19 @@ class SnflParser:
         '''
         Parse a print statement.
         '''
-        token = self.consume()
+        token = self.__consume()
         if token.type != 'PRINT':
             raise ParseException(f"Invalid print statement: {token}")
         
-        l_paren = self.consume()
+        l_paren = self.__consume()
         if l_paren.type != 'LPAREN':
             raise ParseException(f"Expected '(' but got {l_paren}")
         
-        string = self.consume()
+        string = self.__consume()
         if string.type != 'STRING' and string.type != 'IDENTIFIER' and string.type != 'NUMBER' and string.type != 'BOOLEAN' and string.type != 'CHAR':
             raise ParseException(f"Cannot print - received {string.type}")
         
-        r_paren = self.consume()
+        r_paren = self.__consume()
         if r_paren.type != 'RPAREN':
             raise ParseException(f"Expected ')' but got {r_paren}")
         

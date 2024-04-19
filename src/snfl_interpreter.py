@@ -108,13 +108,42 @@ class Interpreter:
         
         # checks if the op is add and performs it. 
         if statement.identifier == 'add':
-            print(f"Adding {left} and {right}")
+            # print(f"Adding {left} and {right}")
             result = left + right
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
-        
+        elif statement.identifier == 'gt':
+            result = left > right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        elif statement.identifier == 'lt':
+            result = left < right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        elif statement.identifier == 'gte':
+            result = left >= right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        elif statement.identifier == 'lte':
+            result = left <= right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        elif statement.identifier == 'eq':
+            result = left == right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
 def main():
     # Initial configuration
     if len(sys.argv) < 2:

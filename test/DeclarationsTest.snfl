@@ -3,3 +3,23 @@ romeo is 18
 // This is a comment which will be ignored by the tokenizer
 november is 14
 helloWorld is "Hello world!"
+
+// here are some operations for test
+// a is 10
+// b is 20
+// c is add(a, b)
+// d is sub(b, a)
+// e is mult(c, d)
+// f is div(e, a)
+// g is mod(b, a)
+// h is "Hello, world!"
+// i is true
+// j is false
+// k is and(i, j)
+// l is or(i, j)
+// m is not(j)
+// n is gt(a, b)
+// o is lt(a, b)
+// p is gte(a, a)
+// q is lte(b, a)
+// r is eq(a, b)

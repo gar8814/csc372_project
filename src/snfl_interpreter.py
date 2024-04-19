@@ -101,13 +101,14 @@ class Interpreter:
         else:
             right = statement.right
 
-        if not isinstance(left, int):
-            raise TypeError("Can only add ints")
-        if not isinstance(right,int):
-            raise TypeError("Can only add ints")
+        
         
         # checks if the op is add and performs it. 
         if statement.identifier == 'add':
+            if not isinstance(left, int):
+                raise TypeError("Can only add ints")
+            if not isinstance(right,int):
+                raise TypeError("Can only add ints")
             # print(f"Adding {left} and {right}")
             result = left + right
             if statement.dest is not None:
@@ -115,55 +116,120 @@ class Interpreter:
             else:
                 print(f"result = {result}")
         elif statement.identifier == 'sub':
+            if not isinstance(left, int):
+                raise TypeError("Can only add ints")
+            if not isinstance(right,int):
+                raise TypeError("Can only add ints")
             result = left - right
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
         elif statement.identifier == 'mult':
+            if not isinstance(left, int):
+                raise TypeError("Can only add ints")
+            if not isinstance(right,int):
+                raise TypeError("Can only add ints")
             result = left * right
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
         elif statement.identifier == 'div':
+            if not isinstance(left, int):
+                raise TypeError("Can only add ints")
+            if not isinstance(right,int):
+                raise TypeError("Can only add ints")
             result = left // right
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
         elif statement.identifier == 'mod':
+            if not isinstance(left, int):
+                raise TypeError("Can only add ints")
+            if not isinstance(right,int):
+                raise TypeError("Can only add ints")
             result = left % right
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
         elif statement.identifier == 'gt':
+            if not isinstance(left, int):
+                raise TypeError("Can only add ints")
+            if not isinstance(right,int):
+                raise TypeError("Can only add ints")
             result = left > right
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
         elif statement.identifier == 'lt':
+            if not isinstance(left, int):
+                raise TypeError("Can only add ints")
+            if not isinstance(right,int):
+                raise TypeError("Can only add ints")
             result = left < right
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
         elif statement.identifier == 'gte':
+            if not isinstance(left, int):
+                raise TypeError("Can only add ints")
+            if not isinstance(right,int):
+                raise TypeError("Can only add ints")
             result = left >= right
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
         elif statement.identifier == 'lte':
+            if not isinstance(left, int):
+                raise TypeError("Can only add ints")
+            if not isinstance(right,int):
+                raise TypeError("Can only add ints")
             result = left <= right
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
                 print(f"result = {result}")
         elif statement.identifier == 'eq':
+            if not isinstance(left, int):
+                raise TypeError("Can only add ints")
+            if not isinstance(right,int):
+                raise TypeError("Can only add ints")
             result = left == right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        elif statement.identifier == 'and':
+            if not isinstance(left, bool):
+                raise TypeError("Can only and bools")
+            if not isinstance(right,bool):
+                raise TypeError("Can only and bools")
+            result = left and right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        elif statement.identifier == 'or':
+            if not isinstance(left, bool):
+                raise TypeError("Can only or bools")
+            if not isinstance(right,bool):
+                raise TypeError("Can only or bools")
+            result = left or right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        elif statement.identifier == 'not':
+            if not isinstance(left, bool):
+                raise TypeError("Can only not bools")
+            
+            result = not left
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:

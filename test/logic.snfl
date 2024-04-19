@@ -1,0 +1,18 @@
+a is True
+b is False 
+
+c is and(a,b)
+print("true and false")
+print(c)
+
+c is or(a,b)
+print("true or false")
+print(c)
+
+c is not(a)
+print("not true")
+print(c)
+
+c is not(b)
+print("not false")
+print(c)

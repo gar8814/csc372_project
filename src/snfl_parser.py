@@ -9,37 +9,55 @@ e.g. ['juliet', 'is', '10'] -> ['DECLARATION juliet is 10']
 from parse_exception import ParseException
 from declaration import Declaration
 from print import Print
+from operations import Operations
+
 
 class SnflParser:
 
     def __init__(self, tokens):
         self.tokens = tokens
         self.current = 0
+        # Add additional funcs to self.funcs 
+        self.__funcs = {
+            'IDENTIFIER': self.__declaration,
+            'ADD': self.__op,
+            'SUB': self.__op,
+            'DIV': self.__op,
+            'MULT': self.__op,
+            'MOD': self.__op,
+            'AND': self.__op,
+            'OR': self.__op,
+            'GT': self.__op,
+            'LT': self.__op,
+            'GTE': self.__op,
+            'LTE': self.__op,
+            'EQ': self.__op,
+            'PRINT': self.__print()
+
+        }
 
     def parse(self):
         '''
         Parse the tokens and return the statements.        
         '''
+        print("In SnflParser.parse()")
         statements = []
-        while not self.isEOF():
-            current = self.peek()
-
-            if current.type in ['IDENTIFIER']:
-                statements.append(self.declaration())
-            elif current.type == 'PRINT':
-                statements.append(self.print())
-            else:
-                raise ParseException(f"Unexpected token: {current.type}")
+        while not self.__isEOF():
+            current = self.__peek()
+            # print(f"current: {current.type}")
+            # determine which function to call to handle the incoming statement. 
+            func = self.__funcs.get(current.type)
+            statements.append(func())
             
         return statements
 
-    def peek(self):
+    def __peek(self):
         '''
         Peek at the current token.
         '''
         return self.tokens[self.current]
 
-    def consume(self):
+    def __consume(self):
         '''
         Consume the current token and return the statement.
         ''' 
@@ -47,36 +65,74 @@ class SnflParser:
         self.current += 1
         return token
 
-    def isEOF(self):
+    def __isEOF(self):
         return self.current >= len(self.tokens)
     
-    def declaration(self):
+    # ------------------------------------------------------------------------------------------------------------------
+    # This is where you want to create more handlers for additional statement types to parse 
+    # this ultimatly needs to return an object that describes the statement and this object class should 
+    # at least inherit from Statement
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def __op(self):
+        '''
+        parse an operation
+        '''
+        token = self.__consume()
+        return self.__parse_op(token)
+        
+
+
+    def __declaration(self):
         '''
         Parse a declaration.
         '''
-        token = self.consume()
+        token = self.__consume()
         if token.type == 'IDENTIFIER':
-            return self.parse_declaration(token)
+            return self.__parse_declaration(token)
         else:
             raise ParseException(f"Invalid declaration: {token}")
     
-    def parse_declaration(self, declaration):
+    def __parse_declaration(self, declaration):
         '''
         Parse a declaration.
         '''
         identifier = declaration.value
 
-        assign = self.consume()
+        assign = self.__consume()
         if assign.type != 'ASSIGN':
             raise ParseException(f"Expected assign but got {assign.type}")
 
-        value = self.consume()
-        if value.type not in ['NUMBER', 'STRING', 'BOOLEAN', 'CHAR']:
+        value = self.__consume()
+        if value.type in ['NUMBER', 'STRING', 'BOOLEAN', 'CHAR']:
+            return Declaration(f"DECLARATION {identifier} {assign.value} {value.value}", identifier, value.value)
+        elif value.type in ['ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND',  'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ']:
+            return self.__parse_op(value, identifier)
+        else:
             raise ParseException(f"Expected value but got {value.type}")
+    
+    def __parse_op(self, addOp, dest=None ):
+        '''
+        Parse an operation statement
+        '''
+        operation = addOp.value
+        print(operation)
+        next = self.__consume()
 
-        return Declaration(f"DECLARATION {identifier} {assign.value} {value.value}", identifier, value.value)
+        leftSide = self.__consume()
+        # What if this is another operation statement
+        if leftSide in self.__funcs.keys():
+            pass
+        next = self.__consume()
 
-    def print(self):
+        # What if this is another operation statement
+        rightSide = self.__consume()
+        if rightSide in self.__funcs.keys():
+            pass
+        next = self.__consume()
+        return Operations(f"{operation}({leftSide.value},{rightSide.value})", operation,leftSide.value,rightSide.value, dest)
+
+    def __print(self):
         '''
         Parse a print statement.
         '''
@@ -97,3 +153,4 @@ class SnflParser:
             raise ParseException(f"Expected ')' but got {r_paren}")
         
         return Print(f"PRINT {l_paren.value} {string.value} {r_paren.value}", token.type, string.value)
+

@@ -23,8 +23,10 @@ import sys
 from colors import Colors
 from declaration import Declaration
 from print import Print
+from operations import Operations
 from snfl_parser import SnflParser
 from snfl_tokenizer import SnflTokenizer
+from type_errors import TypeError
 
 class Config:
     debug = False
@@ -65,20 +67,19 @@ class Interpreter:
         switcher = {
             Declaration: self.declare,
             Print: self.print
+            Operations: self.operation
         }
+        
         func = switcher.get(statement_type, lambda: "Invalid statement")
         func(statement)
 
     def declare(self, statement):
         self.symbol_table[statement.identifier] = statement.value
-
         if (Config.debug):
             Config.print_debug(f"Declared variable '{statement.identifier}' with value '{statement.value}'")
 
     def print(self, statement):
         value = statement.value
-
-
         if value in self.symbol_table:
             if (Config.debug):
                 Config.print_debug(f"Printing: {value} (symbol)")
@@ -87,7 +88,33 @@ class Interpreter:
             if (Config.debug):
                 Config.print_debug(f"Printing: {value}")
             print(value)
+    
+    def operation(self, statement):
+        # Checks to see if the values are literals or variable references and will populate the left and right side
+        # from the symbol table if its a variable otherwise it will use the literal value
+        if statement.left in self.symbol_table.keys():
+            left = self.symbol_table.get(statement.left)
+        else:
+            left = statement.left
+        if statement.right in self.symbol_table.keys():
+            right = self.symbol_table.get(statement.right)
+        else:
+            right = statement.right
 
+        if not isinstance(left, int):
+            raise TypeError("Can only add ints")
+        if not isinstance(right,int):
+            raise TypeError("Can only add ints")
+        
+        # checks if the op is add and performs it. 
+        if statement.identifier == 'add':
+            print(f"Adding {left} and {right}")
+            result = left + right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        
 def main():
     # Initial configuration
     if len(sys.argv) < 2:
@@ -104,6 +131,7 @@ def main():
         return
     
     Config.set_debug(debug)
+
 
     with open(filename, 'r') as file:
         data = file.read()

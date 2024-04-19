@@ -1,0 +1,7 @@
+add(1,2)
+a is 1
+b is 2
+c is add(a, b)
+a is "string"
+b is 2
+d is add(a,b)

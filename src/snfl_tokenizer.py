@@ -16,7 +16,7 @@ class SnflTokenizer:
     tokens = (
 
         'IDENTIFIER', 'ASSIGN', 'EQUAL', 'NUMBER', 'STRING', 'BOOLEAN', 'CHAR', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
-        'ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'COMMA', 'PRINT'
+        'ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'COMMA', 'PRINT', 'NOT'
 
     )
 
@@ -26,7 +26,7 @@ class SnflTokenizer:
     t_RPAREN  = r'\)'
     t_LBRACE  = r'\{'
     t_RBRACE  = r'\}'
-    t_IDENTIFIER = r'(?!(is)\b)(?!(add)\b)(?!(sub)\b)(?!(div)\b)(?!(mult)\b)(?!(mod)\b)(?!(and)\b)(?!(or)\b)(?!(gt)\b)(?!(lt)\b)(?!(gte)\b)(?!(lte)\b)(?!(eq)\b)[a-zA-Z_][a-zA-Z_0-9]*'
+    t_IDENTIFIER = r'(?!(is)\b)(?!(add)\b)(?!(sub)\b)(?!(div)\b)(?!(mult)\b)(?!(mod)\b)(?!(and)\b)(?!(or)\b)(?!(gt)\b)(?!(lt)\b)(?!(gte)\b)(?!(lte)\b)(?!(eq)\b)(?!(not)\b)[a-zA-Z_][a-zA-Z_0-9]*'
     t_ignore_COMMENT = r'//.*'
 
     t_ADD = r'add'
@@ -36,6 +36,7 @@ class SnflTokenizer:
     t_MOD = r'mod'
     t_AND = r'and'
     t_OR = r'or'
+    t_NOT = r'not'
     t_GT = r'gt'
     t_LT = r'lt'
     t_GTE = r'gte'
@@ -54,8 +55,8 @@ class SnflTokenizer:
         return t
 
     def t_BOOLEAN(self, t):
-        r'true|false'
-        t.value = (lambda x: 'true' if x == 'true' else 'false')(t.value)
+        r'True|False'
+        t.value = (lambda x: True if x == 'True' else False)(t.value)
         return t
 
     def t_CHAR(self, t):

@@ -104,7 +104,7 @@ class SnflParser:
         value = self.__consume()
         if value.type in ['NUMBER', 'STRING', 'BOOLEAN', 'CHAR']:
             return Declaration(f"DECLARATION {identifier} {assign.value} {value.value}", identifier, value.value)
-        elif value.type in ['ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND',  'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ']:
+        elif value.type in ['ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND',  'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'NOT']:
             return self.__parse_op(value, identifier)
         else:
             raise ParseException(f"Expected value but got {value.type}")
@@ -119,6 +119,11 @@ class SnflParser:
 
         leftSide = self.__consume()
         # What if this is another operation statement
+
+        if operation == 'not':
+            self.__consume()
+            return Operations(f"{operation}({leftSide.value})", operation,leftSide.value,None, dest)
+            
         if leftSide in self.__funcs.keys():
             pass
         next = self.__consume()

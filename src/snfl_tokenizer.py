@@ -15,7 +15,7 @@ class SnflTokenizer:
 
     tokens = (
         'IDENTIFIER', 'ASSIGN', 'EQUAL', 'NUMBER', 'STRING', 'BOOLEAN', 'CHAR', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
-        'ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND',  'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'COMMA'
+        'ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'COMMA'
     )
 
     t_ASSIGN = r'is'

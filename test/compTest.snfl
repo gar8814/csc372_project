@@ -1,5 +1,6 @@
 a is 1
 b is 2
+d is 2
 
 c is gt(a,b)
 print("1>2:")
@@ -19,4 +20,36 @@ print(c)
 
 c is eq(a,b)
 print("1==2:")
+print(c)
+
+c is gt(b,a)
+print("2>1:")
+print(c)
+
+c is lt(b,a)
+print("2<1:")
+print(c)
+
+c is gte(b,a)
+print("2>=1:")
+print(c)
+
+c is lte(b,a)
+print("2<=1:")
+print(c)
+
+c is eq(b,a)
+print("2==1:")
+print(c)
+
+c is eq(b,d)
+print("2==2:")
+print(c)
+
+c is gte(b,d)
+print("2>=2:")
+print(c)
+
+c is lte(b,d)
+print("2<=2:")
 print(c)

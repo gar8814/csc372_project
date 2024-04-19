@@ -15,6 +15,23 @@ class SnflParser:
     def __init__(self, tokens):
         self.tokens = tokens
         self.current = 0
+        # Add additional funcs to self.funcs 
+        self.__funcs = {
+            'IDENTIFIER': self.__declaration,
+            'ADD': self.__op,
+            'SUB': self.__op,
+            'DIV': self.__op,
+            'MULT': self.__op,
+            'MOD': self.__op,
+            'AND': self.__op,
+            'OR': self.__op,
+            'GT': self.__op,
+            'LT': self.__op,
+            'GTE': self.__op,
+            'LTE': self.__op,
+            'EQ': self.__op,
+
+        }
 
     def parse(self):
         '''
@@ -22,24 +39,22 @@ class SnflParser:
         '''
         print("In SnflParser.parse()")
         statements = []
-        while not self.isEOF():
-            current = self.peek()
-            print(f"current: {current}")
-            if current.type in ['IDENTIFIER']:
-                statements.append(self.declaration())
-                print(statements)
-            else:
-                raise ParseException(f"Unexpected token: {current.type}")
+        while not self.__isEOF():
+            current = self.__peek()
+            # print(f"current: {current.type}")
+            # determine which function to call to handle the incoming statement. 
+            func = self.__funcs.get(current.type)
+            statements.append(func())
             
         return statements
 
-    def peek(self):
+    def __peek(self):
         '''
         Peek at the current token.
         '''
         return self.tokens[self.current]
 
-    def consume(self):
+    def __consume(self):
         '''
         Consume the current token and return the statement.
         ''' 
@@ -47,65 +62,73 @@ class SnflParser:
         self.current += 1
         return token
 
-    def isEOF(self):
+    def __isEOF(self):
         return self.current >= len(self.tokens)
     
-    def add(self):
+    # ------------------------------------------------------------------------------------------------------------------
+    # This is where you want to create more handlers for additional statement types to parse 
+    # this ultimatly needs to return an object that describes the statement and this object class should 
+    # at least inherit from Statement
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def __op(self):
         '''
         parse an operation
         '''
-        token = self.consume()
-        if token.type == 'ADD':
-            return self.parse_add(token)
-        else:
-            raise ParseException(f"Invalid declaration: {token}")
+        token = self.__consume()
+        return self.__parse_op(token)
+        
 
 
-    def declaration(self):
+    def __declaration(self):
         '''
         Parse a declaration.
         '''
-        token = self.consume()
+        token = self.__consume()
         if token.type == 'IDENTIFIER':
-            return self.parse_declaration(token)
+            return self.__parse_declaration(token)
         else:
             raise ParseException(f"Invalid declaration: {token}")
     
-    def parse_declaration(self, declaration):
+    def __parse_declaration(self, declaration):
         '''
         Parse a declaration.
         '''
         identifier = declaration.value
 
-        assign = self.consume()
+        assign = self.__consume()
         if assign.type != 'ASSIGN':
             raise ParseException(f"Expected assign but got {assign.type}")
 
-        value = self.consume()
+        value = self.__consume()
         if value.type in ['NUMBER', 'STRING', 'BOOLEAN', 'CHAR']:
             return Declaration(f"DECLARATION {identifier} {assign.value} {value.value}", identifier, value.value)
         elif value.type in ['ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND',  'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ']:
-            print(f"value.type = {value.type}, value.value={value.value}")
-            openParenth = self.consume()
-            print(openParenth.value)
-            firstVal = self.consume()
-            print(firstVal.value)
-            comma = self.consume() 
-            print(comma.value)
-            secondVal = self.consume()
-            print(secondVal.value)
-            self.consume()
-            return Operations(f"ADD {identifier} {assign.value} {firstVal.value} + {secondVal.value}", value.value, firstVal.value, secondVal.value)
+            return self.__parse_op(value, identifier)
         else:
             raise ParseException(f"Expected value but got {value.type}")
-
-        return Declaration(f"DECLARATION {identifier} {assign.value} {value.value}", identifier, value.value)
     
-    def parse_add(self, addOp):
+    def __parse_op(self, addOp, dest=None ):
+        '''
+        Parse an operation statement
+        '''
         operation = addOp.value
-        add_op = self.consume()
-        if add_op != 'ADD':
-            raise ParseException(f"Expected add but got {add_op.type}")
+        print(operation)
+        next = self.__consume()
+
+        leftSide = self.__consume()
+        # What if this is another operation statement
+        if leftSide in self.__funcs.keys():
+            pass
+        next = self.__consume()
+
+        # What if this is another operation statement
+        rightSide = self.__consume()
+        if rightSide in self.__funcs.keys():
+            pass
+        next = self.__consume()
+        return Operations(f"{operation}({leftSide.value},{rightSide.value})", operation,leftSide.value,rightSide.value, dest)
+    
         
         
 

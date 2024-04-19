@@ -16,12 +16,13 @@ class Operations(Declaration):
     In the above example, the identifier is 'x', and the value is '10'.
     '''
 
-    def __init__(self, stmt, op, left, right):
+    def __init__(self, stmt, op, left, right, dest):
         self.stmt = stmt
         self.identifier = op
         self.left = left
         self.right = right
-        self.value = 0 
+        self.value = 0
+        self.dest = dest 
         
 
     def __str__(self):

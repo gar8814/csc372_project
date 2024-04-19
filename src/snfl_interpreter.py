@@ -68,9 +68,25 @@ class Interpreter:
             print(f"Declared variable '{statement.identifier}' with value '{statement.value}'")
     
     def operation(self, statement):
-        print(f"I made it to the operation with {statement}")
-        print("Cheers!")
-
+        # Checks to see if the values are literals or variable references and will populate the left and right side
+        # from the symbol table if its a variable otherwise it will use the literal value
+        if statement.left in self.symbol_table.keys():
+            left = self.symbol_table.get(statement.left)
+        else:
+            left = statement.left
+        if statement.right in self.symbol_table.keys():
+            right = self.symbol_table.get(statement.right)
+        else:
+            right = statement.right
+        # checks if the op is add and performs it. 
+        if statement.identifier == 'add':
+            print(f"Adding {left} and {right}")
+            result = left + right
+            if statement.dest is not None:
+                self.symbol_table[statement.dest] = result
+            else:
+                print(f"result = {result}")
+        
 def main():
     # Initial configuration
     if len(sys.argv) < 2:

@@ -114,7 +114,7 @@ class SnflParser:
         Parse an operation statement
         '''
         operation = addOp.value
-        print(operation)
+        # print(operation)
         next = self.__consume()
 
         leftSide = self.__consume()

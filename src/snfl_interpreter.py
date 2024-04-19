@@ -66,7 +66,7 @@ class Interpreter:
         statement_type = type(statement)
         switcher = {
             Declaration: self.declare,
-            Print: self.print
+            Print: self.print,
             Operations: self.operation
         }
         

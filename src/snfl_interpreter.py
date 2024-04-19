@@ -20,15 +20,25 @@ Usage:
 """
 
 import sys
+from colors import Colors
 from declaration import Declaration
+from print import Print
 from operations import Operations
 from snfl_parser import SnflParser
 from snfl_tokenizer import SnflTokenizer
 from type_errors import TypeError
 
 class Config:
-    def __init__(self, debug=False):
-        self.debug = debug
+    debug = False
+
+    @classmethod
+    def set_debug(self, isDebug):
+        Config.debug = isDebug
+
+    @classmethod
+    def print_debug(self, message):
+        if self.debug:
+            print(f"{Colors.YELLOW}[DEBUG]{Colors.RESET} {message}")
 
 class Interpreter:
     '''
@@ -41,14 +51,13 @@ class Interpreter:
         statements (list): The list of statements to interpret.
         symbol_table (dict): The symbol table to store variables.
     '''
-    def __init__(self, config, statements) -> None:
+    def __init__(self, statements) -> None:
         self.statements = statements
-        self.config = config
         self.symbol_table = {}
 
     def run(self):
-        if (self.config.debug):
-            print("[RUNNING INTERPRETER...]")
+        if (Config.debug):
+            Config.print_debug(f"[RUNNING INTERPRETER...]")
 
         for statement in self.statements:
             self.execute(statement)
@@ -57,16 +66,28 @@ class Interpreter:
         statement_type = type(statement)
         switcher = {
             Declaration: self.declare,
+            Print: self.print
             Operations: self.operation
         }
+        
         func = switcher.get(statement_type, lambda: "Invalid statement")
         func(statement)
 
     def declare(self, statement):
         self.symbol_table[statement.identifier] = statement.value
+        if (Config.debug):
+            Config.print_debug(f"Declared variable '{statement.identifier}' with value '{statement.value}'")
 
-        if (self.config.debug):
-            print(f"Declared variable '{statement.identifier}' with value '{statement.value}'")
+    def print(self, statement):
+        value = statement.value
+        if value in self.symbol_table:
+            if (Config.debug):
+                Config.print_debug(f"Printing: {value} (symbol)")
+            print(self.symbol_table[value])
+        else:
+            if (Config.debug):
+                Config.print_debug(f"Printing: {value}")
+            print(value)
     
     def operation(self, statement):
         # Checks to see if the values are literals or variable references and will populate the left and right side
@@ -109,28 +130,28 @@ def main():
         print("Invalid file extension. Only .snfl files are supported.")
         return
     
-    config = Config(debug)
+    Config.set_debug(debug)
 
 
     with open(filename, 'r') as file:
         data = file.read()
 
     # Tokenize the data
-    if config.debug:
-        print("[TOKENIZING DATA...]")
-    tokens = tokenize_data(config, data)
+    if Config.debug:
+        Config.print_debug(f"[TOKENIZING DATA...]")
+    tokens = tokenize_data(data)
 
     # Parse the tokens
-    if config.debug:
-        print("[PARSING TOKENS...]")
-    statements = parse_tokens(config, tokens)
+    if Config.debug:
+        Config.print_debug(f"[PARSING TOKENS...]")
+    statements = parse_tokens(tokens)
 
     # Interpret the statements
-    if config.debug:
-        print("[INTERPRETING STATEMENTS...]")
-    interpret_statements(config, statements)
+    if Config.debug:
+        Config.print_debug(f"[INTERPRETING STATEMENTS...]")
+    interpret_statements(statements)
 
-def tokenize_data(config, data):
+def tokenize_data(data):
     '''
     Step 1: Tokenize the data.
     '''
@@ -138,29 +159,29 @@ def tokenize_data(config, data):
     tokenizer.build()
     tokens = tokenizer.tokenize(data)
 
-    if config.debug:
+    if Config.debug:
         for token in tokens:
-            print(token)
+            Config.print_debug(f"{token}")
     return tokens
 
-def parse_tokens(config, tokens):
+def parse_tokens(tokens):
     '''
     Step 2: Parse the tokens.
     '''
     parser = SnflParser(tokens)
     statements = parser.parse()
 
-    if config.debug:
+    if Config.debug:
         for statement in statements:
-            print(statement.stmt)
+            Config.print_debug(f"{statement.stmt}")
 
     return statements
 
-def interpret_statements(config, statements):
+def interpret_statements(statements):
     '''
     Step 3: Interpret the statements.
     '''
-    interpreter = Interpreter(config, statements)
+    interpreter = Interpreter(statements)
     interpreter.run()
 
 if __name__ == "__main__":

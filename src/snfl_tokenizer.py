@@ -14,8 +14,10 @@ class SnflTokenizer:
         self.lexer = None
 
     tokens = (
+
         'IDENTIFIER', 'ASSIGN', 'EQUAL', 'NUMBER', 'STRING', 'BOOLEAN', 'CHAR', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
-        'ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'COMMA'
+        'ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'COMMA', 'PRINT'
+
     )
 
     t_ASSIGN = r'is'
@@ -53,12 +55,16 @@ class SnflTokenizer:
 
     def t_BOOLEAN(self, t):
         r'true|false'
-        t.value = (t.value == 'true')
+        t.value = (lambda x: 'true' if x == 'true' else 'false')(t.value)
         return t
 
     def t_CHAR(self, t):
         r"'.'"
         t.value = t.value[1:-1]  # remove the single quotes
+        return t
+
+    def t_PRINT(self, t):
+        r'print'
         return t
     
     t_ignore = " \t"

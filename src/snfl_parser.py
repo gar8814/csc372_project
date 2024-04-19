@@ -8,7 +8,9 @@ e.g. ['juliet', 'is', '10'] -> ['DECLARATION juliet is 10']
 
 from parse_exception import ParseException
 from declaration import Declaration
+from print import Print
 from operations import Operations
+
 
 class SnflParser:
 
@@ -30,6 +32,7 @@ class SnflParser:
             'GTE': self.__op,
             'LTE': self.__op,
             'EQ': self.__op,
+            'PRINT': self.__print()
 
         }
 
@@ -128,7 +131,26 @@ class SnflParser:
             pass
         next = self.__consume()
         return Operations(f"{operation}({leftSide.value},{rightSide.value})", operation,leftSide.value,rightSide.value, dest)
-    
+
+    def __print(self):
+        '''
+        Parse a print statement.
+        '''
+        token = self.consume()
+        if token.type != 'PRINT':
+            raise ParseException(f"Invalid print statement: {token}")
         
+        l_paren = self.consume()
+        if l_paren.type != 'LPAREN':
+            raise ParseException(f"Expected '(' but got {l_paren}")
         
+        string = self.consume()
+        if string.type != 'STRING' and string.type != 'IDENTIFIER' and string.type != 'NUMBER' and string.type != 'BOOLEAN' and string.type != 'CHAR':
+            raise ParseException(f"Cannot print - received {string.type}")
+        
+        r_paren = self.consume()
+        if r_paren.type != 'RPAREN':
+            raise ParseException(f"Expected ')' but got {r_paren}")
+        
+        return Print(f"PRINT {l_paren.value} {string.value} {r_paren.value}", token.type, string.value)
 

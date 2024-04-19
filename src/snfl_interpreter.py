@@ -24,6 +24,7 @@ from declaration import Declaration
 from operations import Operations
 from snfl_parser import SnflParser
 from snfl_tokenizer import SnflTokenizer
+from type_errors import TypeError
 
 class Config:
     def __init__(self, debug=False):
@@ -78,6 +79,12 @@ class Interpreter:
             right = self.symbol_table.get(statement.right)
         else:
             right = statement.right
+
+        if not isinstance(left, int):
+            raise TypeError("Can only add ints")
+        if not isinstance(right,int):
+            raise TypeError("Can only add ints")
+        
         # checks if the op is add and performs it. 
         if statement.identifier == 'add':
             print(f"Adding {left} and {right}")
@@ -127,7 +134,6 @@ def tokenize_data(config, data):
     '''
     Step 1: Tokenize the data.
     '''
-    print("Step 1: Tokenize Data")
     tokenizer = SnflTokenizer()
     tokenizer.build()
     tokens = tokenizer.tokenize(data)
@@ -141,7 +147,6 @@ def parse_tokens(config, tokens):
     '''
     Step 2: Parse the tokens.
     '''
-    print("Step 2: Parse the tokens")
     parser = SnflParser(tokens)
     statements = parser.parse()
 

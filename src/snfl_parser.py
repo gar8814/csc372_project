@@ -10,6 +10,7 @@ from parse_exception import ParseException
 from declaration import Declaration
 from print import Print
 from operations import Operations
+from statement import IfStatement, WhileStatement
 
 
 class SnflParser:
@@ -33,6 +34,11 @@ class SnflParser:
             'LTE': self.__op,
             'EQ': self.__op,
             'PRINT': self.__print
+            'IDENTIFIER': self.__declaration,
+            'ADD': self.__op,
+            'PRINT': self.__print,
+            'IF': self.parse_if_statement,
+            'WHILE': self.parse_while_statement
         }
 
     def parse(self):
@@ -48,6 +54,7 @@ class SnflParser:
             statements.append(func())
             
         return statements
+
 
     def __peek(self):
         '''
@@ -72,14 +79,90 @@ class SnflParser:
     # at least inherit from Statement
     # ------------------------------------------------------------------------------------------------------------------
 
+    # Method to parse if-else statements
+    def parse_if_statement(self):
+        '''
+        Parsing the if-else statements
+        '''
+        self.__consume()  # consume the 'IF' token
+        condition = self.parse_expression()
+        self.expect('THEN')
+        then_branch = self.parse_block()
+
+        else_branch = None
+        if self.__peek().type == 'ELSE':
+            self.__consume()  # consume the 'ELSE' token
+            else_branch = self.parse_block()
+
+        return IfStatement(condition, then_branch, else_branch)
+
+    # Method to parse while statements
+    def parse_while_statement(self):
+        '''
+        Parsing the while loops
+        '''
+        self.__consume()  # consume the 'WHILE' token
+        condition = self.parse_expression()
+        self.expect('DO')
+        body = self.parse_block()
+
+        return WhileStatement(condition, body)
+
+    def expect(self, expected_type):
+        """
+        Ensure the next token is of the expected type and consume it.
+        """
+        token = self.__peek()
+        if token.type != expected_type:
+            raise ParseException(f"Expected token type {expected_type} but got {token.type}")
+        return self.__consume()
+
+    def parse_expression(self):
+        """
+        Parse an expression and return an appropriate expression object.
+        """
+        token = self.__peek()
+        if token.type in ['NUMBER', 'STRING', 'BOOLEAN', 'CHAR', 'IDENTIFIER']:
+            # Simple literals or variable names
+            self.__consume()
+            return token
+        elif token.type in ['ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'NOT']:
+            # Operator-based expressions
+            return self.__parse_op(token)
+        else:
+            raise ParseException(f"Unexpected token type in expression: {token.type}")
+
+    def parse_block(self):
+        """
+        Parse a block of statements until the end of the block.
+        """
+        statements = []
+        while not self.__check('ENDIF') and not self.__check('ELSE') and not self.__isEOF():
+            statements.append(self.parse_statement())
+        return statements
+
+    def check(self, token_type):
+        """
+        Check if the next token is of the given type without consuming it.
+        """
+        return self.__peek().type == token_type
+
+    def parse_statement(self):
+        """
+        Parse a single statement.
+        """
+        token = self.__peek()
+        if token.type in self.__funcs:
+            return self.__funcs[token.type]()
+        else:
+            raise ParseException(f"Unrecognized token type for statement: {token.type}")
+    
     def __op(self):
         '''
         parse an operation
         '''
         token = self.__consume()
         return self.__parse_op(token)
-        
-
 
     def __declaration(self):
         '''

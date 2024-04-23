@@ -16,7 +16,7 @@ class SnflTokenizer:
     tokens = (
 
         'IDENTIFIER', 'ASSIGN', 'EQUAL', 'NUMBER', 'STRING', 'BOOLEAN', 'CHAR', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
-        'ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'COMMA', 'PRINT', 'NOT'
+        'ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'COMMA', 'PRINT', 'NOT', 'IF', 'ELSE', 'WHILE'
 
     )
 
@@ -66,6 +66,18 @@ class SnflTokenizer:
 
     def t_PRINT(self, t):
         r'print'
+        return t
+
+    def t_IF(self, t):
+        r'if'
+        return t
+
+    def t_ELSE(self, t):
+        r'else'
+        return t
+
+    def t_WHILE(self, t):
+        r'while'
         return t
     
     t_ignore = " \t"

@@ -62,8 +62,26 @@ class Interpreter:
         for statement in self.statements:
             self.execute(statement)
 
+    def execute_if(self, if_stmt):
+        condition_value = self.evaluate_expression(if_stmt.condition)
+        if condition_value:
+            for stmt in if_stmt.then_branch:
+                self.execute(stmt)
+        elif if_stmt.else_branch:
+            for stmt in if_stmt.else_branch:
+                self.execute(stmt)
+
+    def execute_while(self, while_stmt):
+        while self.evaluate_expression(while_stmt.condition):
+            for stmt in while_stmt.body:
+                self.execute(stmt)
+
     def execute(self, statement):
         statement_type = type(statement)
+        if isinstance(statement, IfStatement):
+            self.execute_if(statement)
+        elif isinstance(statement, WhileStatement):
+            self.execute_while(statement)
         switcher = {
             Declaration: self.declare,
             Print: self.print,

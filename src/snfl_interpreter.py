@@ -24,6 +24,8 @@ from colors import Colors
 from declaration import Declaration
 from print import Print
 from operations import Operations
+from statement import IfStatement
+from statement import WhileStatement
 from snfl_parser import SnflParser
 from snfl_tokenizer import SnflTokenizer
 from type_errors import TypeError
@@ -63,7 +65,7 @@ class Interpreter:
             self.execute(statement)
 
     def execute_if(self, if_stmt):
-        condition_value = self.evaluate_expression(if_stmt.condition)
+        condition_value = if_stmt.condition
         if condition_value:
             for stmt in if_stmt.then_branch:
                 self.execute(stmt)
@@ -78,14 +80,12 @@ class Interpreter:
 
     def execute(self, statement):
         statement_type = type(statement)
-        if isinstance(statement, IfStatement):
-            self.execute_if(statement)
-        elif isinstance(statement, WhileStatement):
-            self.execute_while(statement)
         switcher = {
             Declaration: self.declare,
             Print: self.print,
-            Operations: self.operation
+            Operations: self.operation,
+            IfStatement: self.execute_if,
+            WhileStatement: self.execute_while
         }
         
         func = switcher.get(statement_type, lambda: "Invalid statement")

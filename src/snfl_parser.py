@@ -89,7 +89,7 @@ class SnflParser:
         condition = self.parse_expression()
 
         self.expect('RPAREN')  # Consume the ')' token
-        self.expect('THEN')  # Consume the 'THEN' token
+        # self.expect('THEN')  # Consume the 'THEN' token
 
         then_branch = self.parse_block()
 
@@ -98,12 +98,7 @@ class SnflParser:
             self.expect('ELSE')  # Consume the 'ELSE' token
             else_branch = self.parse_block()
 
-        return {
-            'type': 'IF_STATEMENT',
-            'condition': condition,
-            'then_branch': then_branch,
-            'else_branch': else_branch
-        }
+        return IfStatement(f"if({condition} then {then_branch} else {else_branch}",condition, then_branch, else_branch)
 
 
 
@@ -148,8 +143,10 @@ class SnflParser:
         Parse a block of statements until the end of the block.
         """
         statements = []
-        while not self.__check('ENDIF') and not self.__check('ELSE') and not self.__isEOF():
+        current = self.__consume()
+        while current.value != '}':
             statements.append(self.parse_statement())
+            current = self.__consume()
         return statements
 
     def check(self, token_type):
@@ -162,6 +159,7 @@ class SnflParser:
         """
         Parse a single statement.
         """
+        # token = self.__consume()
         token = self.__peek()
         if token.type in self.__funcs:
             return self.__funcs[token.type]()

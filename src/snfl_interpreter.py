@@ -24,8 +24,7 @@ from colors import Colors
 from declaration import Declaration
 from print import Print
 from operations import Operations
-from statement import IfStatement
-from statement import WhileStatement
+from statement import *
 from snfl_parser import SnflParser
 from snfl_tokenizer import SnflTokenizer
 from type_errors import TypeError
@@ -66,10 +65,20 @@ class Interpreter:
 
     def execute_if(self, if_stmt):
         condition_value = if_stmt.condition
+        print(type(condition_value))
+        if not type(condition_value) == Statement:
+            if condition_value.value in self.symbol_table.keys():
+                condition_value = self.symbol_table[condition_value.value]
+            else:
+                print("Var not in lookup table")
+        else:
+            self.execute(condition_value)
+            condition_value = self.symbol_table['Cond']
+
         if condition_value:
             for stmt in if_stmt.then_branch:
                 self.execute(stmt)
-        elif if_stmt.else_branch:
+        else:
             for stmt in if_stmt.else_branch:
                 self.execute(stmt)
 
@@ -132,7 +141,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'sub':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -142,6 +152,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'mult':
             if not isinstance(left, int):
@@ -152,6 +163,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'div':
             if not isinstance(left, int):
@@ -162,6 +174,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'mod':
             if not isinstance(left, int):
@@ -172,6 +185,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'gt':
             if not isinstance(left, int):
@@ -182,6 +196,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'lt':
             if not isinstance(left, int):
@@ -192,6 +207,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'gte':
             if not isinstance(left, int):
@@ -202,6 +218,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'lte':
             if not isinstance(left, int):
@@ -212,6 +229,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'eq':
             if not isinstance(left, int):
@@ -222,6 +240,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'and':
             if not isinstance(left, bool):
@@ -232,6 +251,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'or':
             if not isinstance(left, bool):
@@ -242,6 +262,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         elif statement.identifier == 'not':
             if not isinstance(left, bool):
@@ -251,6 +272,7 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
+                self.symbol_table['Cond'] = result
                 print(f"result = {result}")
         else:
             # Some kind of exception. 

@@ -1,0 +1,11 @@
+simple is 0
+
+while (lt(simple, 10)) {
+    print(simple)
+    simple is add(simple,1)
+    s is 0
+    while (lt(s, 5)) {
+        print("yay")
+        s is add(s,1)
+    }
+}

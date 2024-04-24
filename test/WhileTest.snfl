@@ -1,0 +1,5 @@
+i is 0
+while (lt(i, 10)) {
+    print(i)
+    i is add(i, 1)
+}

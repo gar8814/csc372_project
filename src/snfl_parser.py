@@ -107,10 +107,17 @@ class SnflParser:
         '''
         Parsing the while loops
         '''
-        self.__consume()  # consume the 'WHILE' token
+        self.expect('WHILE')
+        self.expect('LPAREN')
+
         condition = self.parse_expression()
-        self.expect('DO')
+
+        self.expect('RPAREN')
+        self.expect('LBRACE')
+
         body = self.parse_block()
+        
+        self.expect('RBRACE')
 
         return WhileStatement(condition, body)
 
@@ -144,10 +151,10 @@ class SnflParser:
         Parse a block of statements until the end of the block.
         """
         statements = []
-        current = self.__consume()
+        current = self.__peek()
         while current.value != '}':
             statements.append(self.parse_statement())
-            current = self.__consume()
+            current = self.__peek()
         return statements
 
     def check(self, token_type):

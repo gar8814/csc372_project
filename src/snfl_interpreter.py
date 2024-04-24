@@ -83,9 +83,11 @@ class Interpreter:
                 self.execute(stmt)
 
     def execute_while(self, while_stmt):
-        while self.evaluate_expression(while_stmt.condition):
+        self.operation(while_stmt.condition)
+        while self.symbol_table['Cond']:
             for stmt in while_stmt.body:
                 self.execute(stmt)
+            self.operation(while_stmt.condition)
 
     def execute(self, statement):
         statement_type = type(statement)

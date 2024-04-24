@@ -10,9 +10,6 @@ class Statement:
     def __str__(self):
         return self.stmt
 
-    def __repr__(self):
-        return self.__str__()
-
 class IfStatement(Statement):
     def __init__(self, condition, then_branch, else_branch=None):
         super().__init__("IF_STATEMENT")

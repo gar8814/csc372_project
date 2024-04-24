@@ -17,7 +17,7 @@ class SnflTokenizer:
 
         'IDENTIFIER', 'ASSIGN', 'EQUAL', 'NUMBER', 'STRING', 'BOOLEAN', 'CHAR', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE',
         'ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'COMMA', 'PRINT', 'NOT', 'IF', 'ELSE', 'WHILE'
-
+        'END_IF'
     )
 
     t_ASSIGN = r'is'
@@ -74,6 +74,10 @@ class SnflTokenizer:
 
     def t_ELSE(self, t):
         r'else'
+        return t
+    
+    def t_END_IF(self, t):
+        r'} else {'
         return t
 
     def t_WHILE(self, t):

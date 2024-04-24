@@ -24,25 +24,9 @@ class Operations(Declaration):
         self.value = 0
         self.dest = dest 
         
-
     def __str__(self):
         return self.stmt
 
-    def __repr__(self):
-        return self.__str__()
-
-    def __eq__(self, other):
-        return self.stmt == other.stmt and self.type == other.type and self.value == other.value
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-    def __hash__(self):
-        return hash(self.stmt) ^ hash(self.type) ^ hash(self.value)
-
-    def __copy__(self):
-        return Operations(self.stmt, self.value)
-    
     def performOp(self):
         if self.identifier is 'ADD':
             self.value = self.left + self.right

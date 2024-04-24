@@ -1,0 +1,23 @@
+if (gte(5, 2)) {
+    print("Inside the IF statement")
+} else {
+    print("Inside the ELSE statement")   
+}
+print("Outside the if statement")
+
+if (lt(4, 7)) {
+    print("Inside the IF statement 2")
+} else {
+    print("Inside the ELSE statement 2")   
+}
+print("Outside the if statement 2")
+
+if (lte(5, 5)) {
+    print("Inside the IF statement 3")
+} 
+
+if (lte(5, 4)) {
+    print("Inside the IF statement 4")
+} else {
+    print("Inside the ELSE statement 4")   
+}

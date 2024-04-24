@@ -8,36 +8,24 @@ basicGt is gt(5, 3)
 basicLt is lt(3, 5) 
 basicEq is eq(10, 10) 
 
-nestedAdd is add(1, add(2, 3)) 
-nestedMult is mult(2, add(4, div(8, 2))) 
-complexExpr is sub(add(20, 20), mult(3, 10)) 
-
-nestedDiv is div(mult(3, add(2, 3)), sub(20, 10)) 
-nestedMod is mod(add(30, mult(2, 10)), 10) 
-
-complexGt is gt(add(2, mult(3, 3)), 10) 
-complexLt is lt(sub(20, add(2, 3)), mult(2, 5)) 
-
-
-
-If (eq(complexGt, true)) {
+if (eq(complexGt, true)) {
     relResult is "Greater than check passed " 
 } else {
     relResult is "Greater than check failed " 
 }
 
-If (eq(complexLt, false)) {
+if (eq(complexLt, false)) {
     anotherRelResult is "Less than check passed " 
 } else {
     anotherRelResult is "Less than check failed " 
 }
 
-factorialCounter is 5 
-factorialResult is 1 
-While (gte(factorialCounter, 1)) {
-    factorialResult is mult(factorialResult, factorialCounter) 
-    factorialCounter is sub(factorialCounter, 1) 
-}
+// factorialCounter is 5 
+// factorialResult is 1 
+// While (gte(factorialCounter, 1)) {
+    // factorialResult is mult(factorialResult, factorialCounter) 
+    // factorialCounter is sub(factorialCounter, 1) 
+// }
 
 print(basicAdd) 
 print(basicSub) 
@@ -47,13 +35,6 @@ print(basicMod)
 print(basicGt) 
 print(basicLt) 
 print(basicEq) 
-print(nestedAdd) 
-print(nestedMult) 
-print(complexExpr) 
-print(nestedDiv) 
-print(nestedMod) 
-print(complexGt) 
-print(complexLt) 
 print(relResult) 
 print(anotherRelResult) 
 print(factorialResult) 

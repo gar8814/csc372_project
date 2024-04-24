@@ -1,0 +1,9 @@
+a is False 
+b is True
+if (eq(a, b)) {
+    c is "a and b are equal"
+} else {
+    c is "a and b are not equal"
+}
+
+print(c)

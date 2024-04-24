@@ -79,22 +79,33 @@ class SnflParser:
     # at least inherit from Statement
     # ------------------------------------------------------------------------------------------------------------------
 
-    # Method to parse if-else statements
     def parse_if_statement(self):
         '''
         Parsing the if-else statements
         '''
-        self.__consume()  # consume the 'IF' token
+        self.expect('IF')  # Consume the 'IF' token
+        self.expect('LPAREN')  # Consume the '(' token
+
         condition = self.parse_expression()
-        self.expect('THEN')
+
+        self.expect('RPAREN')  # Consume the ')' token
+        self.expect('THEN')  # Consume the 'THEN' token
+
         then_branch = self.parse_block()
 
         else_branch = None
-        if self.__peek().type == 'ELSE':
-            self.__consume()  # consume the 'ELSE' token
+        if self.check('ELSE'):
+            self.expect('ELSE')  # Consume the 'ELSE' token
             else_branch = self.parse_block()
 
-        return IfStatement(condition, then_branch, else_branch)
+        return {
+            'type': 'IF_STATEMENT',
+            'condition': condition,
+            'then_branch': then_branch,
+            'else_branch': else_branch
+        }
+
+
 
     # Method to parse while statements
     def parse_while_statement(self):
@@ -239,4 +250,3 @@ class SnflParser:
             raise ParseException(f"Expected ')' but got {r_paren}")
         
         return Print(f"PRINT {l_paren.value} {string.value} {r_paren.value}", token.type, string.value)
-

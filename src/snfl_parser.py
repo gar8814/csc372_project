@@ -33,7 +33,7 @@ class SnflParser:
             'GTE': self.__op,
             'LTE': self.__op,
             'EQ': self.__op,
-            'PRINT': self.__print
+            'PRINT': self.__print,
             'IDENTIFIER': self.__declaration,
             'ADD': self.__op,
             'PRINT': self.__print,

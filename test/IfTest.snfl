@@ -1,0 +1,5 @@
+if (lt(5, 7)) {
+    print("5 is less than 7")
+} else {
+    print("5 is not less than 7")
+}

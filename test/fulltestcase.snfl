@@ -1,59 +1,33 @@
-basicAdd is add(2, 3) 
-basicSub is sub(10, 4) 
-basicMult is mult(3, 4) 
-basicDiv is div(20, 5) 
-basicMod is mod(22, 6) 
-
-basicGt is gt(5, 3) 
-basicLt is lt(3, 5) 
-basicEq is eq(10, 10) 
-
-nestedAdd is add(1, add(2, 3)) 
-nestedMult is mult(2, add(4, div(8, 2))) 
-complexExpr is sub(add(20, 20), mult(3, 10)) 
-
-nestedDiv is div(mult(3, add(2, 3)), sub(20, 10)) 
-nestedMod is mod(add(30, mult(2, 10)), 10) 
-
-complexGt is gt(add(2, mult(3, 3)), 10) 
-complexLt is lt(sub(20, add(2, 3)), mult(2, 5)) 
-
-
-
-If (eq(complexGt, true)) {
-    relResult is "Greater than check passed " 
+if (gte(5, 2)) {
+    print("Inside the IF statement")
 } else {
-    relResult is "Greater than check failed " 
+    print("Inside the ELSE statement")   
 }
+print("Outside the if statement")
 
-If (eq(complexLt, false)) {
-    anotherRelResult is "Less than check passed " 
+if (lt(4, 7)) {
+    print("Inside the IF statement 2")
 } else {
-    anotherRelResult is "Less than check failed " 
+    print("Inside the ELSE statement 2")   
+}
+print("Outside the if statement 2")
+
+if (lte(5, 5)) {
+    print("Inside the IF statement 3")
+} 
+
+if (lte(5, 4)) {
+    print("Inside the IF statement 4")
+} else {
+    print("Inside the ELSE statement 4")   
 }
 
-factorialCounter is 5 
-factorialResult is 1 
-While (gte(factorialCounter, 1)) {
-    factorialResult is mult(factorialResult, factorialCounter) 
-    factorialCounter is sub(factorialCounter, 1) 
+a is False 
+b is True
+if (eq(a, b)) {
+    c is "a and b are equal"
+} else {
+    c is "a and b are not equal"
 }
 
-print(basicAdd) 
-print(basicSub) 
-print(basicMult) 
-print(basicDiv) 
-print(basicMod) 
-print(basicGt) 
-print(basicLt) 
-print(basicEq) 
-print(nestedAdd) 
-print(nestedMult) 
-print(complexExpr) 
-print(nestedDiv) 
-print(nestedMod) 
-print(complexGt) 
-print(complexLt) 
-print(relResult) 
-print(anotherRelResult) 
-print(factorialResult) 
+print(c)

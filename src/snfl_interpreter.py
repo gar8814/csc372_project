@@ -24,6 +24,7 @@ from colors import Colors
 from declaration import Declaration
 from print import Print
 from operations import Operations
+from statement import *
 from snfl_parser import SnflParser
 from snfl_tokenizer import SnflTokenizer
 from type_errors import TypeError
@@ -63,11 +64,21 @@ class Interpreter:
             self.execute(statement)
 
     def execute_if(self, if_stmt):
-        condition_value = self.evaluate_expression(if_stmt.condition)
+        condition_value = if_stmt.condition
+        # print(type(condition_value))
+        if not type(condition_value) == Operations:
+            if condition_value.value in self.symbol_table.keys():
+                condition_value = self.symbol_table[condition_value.value]
+            else:
+                print("Var not in lookup table")
+        else:
+            self.execute(condition_value)
+            condition_value = self.symbol_table['Cond']
+
         if condition_value:
             for stmt in if_stmt.then_branch:
                 self.execute(stmt)
-        elif if_stmt.else_branch:
+        else:
             for stmt in if_stmt.else_branch:
                 self.execute(stmt)
 
@@ -78,14 +89,12 @@ class Interpreter:
 
     def execute(self, statement):
         statement_type = type(statement)
-        if isinstance(statement, IfStatement):
-            self.execute_if(statement)
-        elif isinstance(statement, WhileStatement):
-            self.execute_while(statement)
         switcher = {
             Declaration: self.declare,
             Print: self.print,
-            Operations: self.operation
+            Operations: self.operation,
+            IfStatement: self.execute_if,
+            WhileStatement: self.execute_while
         }
         
         func = switcher.get(statement_type, lambda: "Invalid statement")
@@ -132,7 +141,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'sub':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -142,7 +152,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'mult':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -152,7 +163,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'div':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -162,7 +174,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'mod':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -172,7 +185,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'gt':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -182,7 +196,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'lt':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -192,7 +207,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'gte':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -202,7 +218,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'lte':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -212,7 +229,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'eq':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -222,7 +240,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'and':
             if not isinstance(left, bool):
                 raise TypeError("Can only and bools")
@@ -232,7 +251,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'or':
             if not isinstance(left, bool):
                 raise TypeError("Can only or bools")
@@ -242,7 +262,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         elif statement.identifier == 'not':
             if not isinstance(left, bool):
                 raise TypeError("Can only not bools")
@@ -251,7 +272,8 @@ class Interpreter:
             if statement.dest is not None:
                 self.symbol_table[statement.dest] = result
             else:
-                print(f"result = {result}")
+                self.symbol_table['Cond'] = result
+                # print(f"result = {result}")
         else:
             # Some kind of exception. 
             pass

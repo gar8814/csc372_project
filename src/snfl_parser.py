@@ -79,22 +79,28 @@ class SnflParser:
     # at least inherit from Statement
     # ------------------------------------------------------------------------------------------------------------------
 
-    # Method to parse if-else statements
     def parse_if_statement(self):
         '''
         Parsing the if-else statements
         '''
-        self.__consume()  # consume the 'IF' token
+        self.expect('IF')  # Consume the 'IF' token
+        self.expect('LPAREN')  # Consume the '(' token
+
         condition = self.parse_expression()
-        self.expect('THEN')
+
+        self.expect('RPAREN')  # Consume the ')' token
+        # self.expect('THEN')  # Consume the 'THEN' token
+
         then_branch = self.parse_block()
 
         else_branch = None
-        if self.__peek().type == 'ELSE':
-            self.__consume()  # consume the 'ELSE' token
+        if self.check('ELSE'):
+            self.expect('ELSE')  # Consume the 'ELSE' token
             else_branch = self.parse_block()
 
-        return IfStatement(condition, then_branch, else_branch)
+        return IfStatement(f"if({condition} then {then_branch} else {else_branch}",condition, then_branch, else_branch)
+
+
 
     # Method to parse while statements
     def parse_while_statement(self):
@@ -121,10 +127,11 @@ class SnflParser:
         """
         Parse an expression and return an appropriate expression object.
         """
-        token = self.__peek()
+        # token = self.__peek()
+        token = self.__consume()
         if token.type in ['NUMBER', 'STRING', 'BOOLEAN', 'CHAR', 'IDENTIFIER']:
             # Simple literals or variable names
-            self.__consume()
+            # self.__consume()
             return token
         elif token.type in ['ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'NOT']:
             # Operator-based expressions
@@ -137,8 +144,10 @@ class SnflParser:
         Parse a block of statements until the end of the block.
         """
         statements = []
-        while not self.__check('ENDIF') and not self.__check('ELSE') and not self.__isEOF():
+        current = self.__consume()
+        while current.value != '}':
             statements.append(self.parse_statement())
+            current = self.__consume()
         return statements
 
     def check(self, token_type):
@@ -151,6 +160,7 @@ class SnflParser:
         """
         Parse a single statement.
         """
+        # token = self.__consume()
         token = self.__peek()
         if token.type in self.__funcs:
             return self.__funcs[token.type]()
@@ -239,4 +249,3 @@ class SnflParser:
             raise ParseException(f"Expected ')' but got {r_paren}")
         
         return Print(f"PRINT {l_paren.value} {string.value} {r_paren.value}", token.type, string.value)
-

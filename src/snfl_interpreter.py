@@ -65,8 +65,8 @@ class Interpreter:
 
     def execute_if(self, if_stmt):
         condition_value = if_stmt.condition
-        print(type(condition_value))
-        if not type(condition_value) == Statement:
+        # print(type(condition_value))
+        if not type(condition_value) == Operations:
             if condition_value.value in self.symbol_table.keys():
                 condition_value = self.symbol_table[condition_value.value]
             else:
@@ -153,7 +153,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'mult':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -164,7 +164,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'div':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -175,7 +175,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'mod':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -186,7 +186,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'gt':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -197,7 +197,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'lt':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -208,7 +208,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'gte':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -219,7 +219,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'lte':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -230,7 +230,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'eq':
             if not isinstance(left, int):
                 raise TypeError("Can only add ints")
@@ -241,7 +241,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'and':
             if not isinstance(left, bool):
                 raise TypeError("Can only and bools")
@@ -252,7 +252,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'or':
             if not isinstance(left, bool):
                 raise TypeError("Can only or bools")
@@ -263,7 +263,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         elif statement.identifier == 'not':
             if not isinstance(left, bool):
                 raise TypeError("Can only not bools")
@@ -273,7 +273,7 @@ class Interpreter:
                 self.symbol_table[statement.dest] = result
             else:
                 self.symbol_table['Cond'] = result
-                print(f"result = {result}")
+                # print(f"result = {result}")
         else:
             # Some kind of exception. 
             pass

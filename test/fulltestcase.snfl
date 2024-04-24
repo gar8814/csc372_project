@@ -1,12 +1,33 @@
-basicGt is gt(5, 3) 
-
-
-
-
-
-if (basicGt) {
-    relResult is "Greater than check passed " 
+if (gte(5, 2)) {
+    print("Inside the IF statement")
 } else {
-    relResult is "Greater than check failed " 
+    print("Inside the ELSE statement")   
+}
+print("Outside the if statement")
+
+if (lt(4, 7)) {
+    print("Inside the IF statement 2")
+} else {
+    print("Inside the ELSE statement 2")   
+}
+print("Outside the if statement 2")
+
+if (lte(5, 5)) {
+    print("Inside the IF statement 3")
+} 
+
+if (lte(5, 4)) {
+    print("Inside the IF statement 4")
+} else {
+    print("Inside the ELSE statement 4")   
 }
 
+a is False 
+b is True
+if (eq(a, b)) {
+    c is "a and b are equal"
+} else {
+    c is "a and b are not equal"
+}
+
+print(c)

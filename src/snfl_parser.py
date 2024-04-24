@@ -127,10 +127,11 @@ class SnflParser:
         """
         Parse an expression and return an appropriate expression object.
         """
-        token = self.__peek()
+        # token = self.__peek()
+        token = self.__consume()
         if token.type in ['NUMBER', 'STRING', 'BOOLEAN', 'CHAR', 'IDENTIFIER']:
             # Simple literals or variable names
-            self.__consume()
+            # self.__consume()
             return token
         elif token.type in ['ADD', 'SUB', 'DIV', 'MULT', 'MOD', 'AND', 'OR', 'GT', 'LT', 'GTE', 'LTE', 'EQ', 'NOT']:
             # Operator-based expressions
